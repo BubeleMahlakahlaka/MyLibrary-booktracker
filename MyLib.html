@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyLib</title>
+    <link rel="stylesheet" href="MyLib.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div class="topbar-row">
+          <div class="brand">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 5.5C10.2 4 7.5 3.5 4 4v14.5c3.5-.5 6.2 0 8 1.5 1.8-1.5 4.5-2 8-1.5V4c-3.5-.5-6.2 0-8 1.5Z"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linejoin="round"
+              />
+              <path d="M12 5.5v14.5" stroke="currentColor" stroke-width="1.4" />
+            </svg>
+            MyLib
+          </div>
+          <div class="search-wrap" id="searchWrap">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="M21 21l-4.3-4.3"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search your library, notes, and quotes…"
+            />
+          </div>
+          <button class="btn btn-primary" id="openAddBtn">+ Add a book</button>
+        </div>
+        <div class="nav-tabs">
+          <button class="nav-tab active" data-nav="library">Library</button>
+          <button class="nav-tab" data-nav="reflections">Reflections</button>
+        </div>
+      </div>
+
+      <!-- LIBRARY VIEW -->
+      <section id="libraryView">
+        <div class="filter-row" id="filterRow">
+          <button class="chip active" data-status="all">All</button>
+          <button class="chip" data-status="want">Want to read</button>
+          <button class="chip" data-status="reading">Reading</button>
+          <button class="chip" data-status="finished">Finished</button>
+          <button class="chip" data-status="dnf">Did not finish</button>
+        </div>
+        <div class="shelf-grid" id="shelfGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <h2>Your shelf is empty</h2>
+          <p>
+            Add the book you're reading to start tracking progress, notes, and
+            quotes.
+          </p>
+          <button class="btn btn-primary" id="emptyAddBtn">
+            + Add your first book
+          </button>
+        </div>
+      </section>
+
+      <!-- BOOK DETAIL VIEW -->
+      <section id="bookDetailView" hidden>
+        <button class="back-link" id="backToLibrary">
+          &larr; Back to library
+        </button>
+        <div class="detail-layout">
+          <div>
+            <div class="detail-cover" id="detailCover"></div>
+            <div class="detail-actions">
+              <button class="btn btn-sm" id="editBookBtn">Edit</button>
+              <button class="btn btn-sm btn-danger" id="deleteBookBtn">
+                Delete
+              </button>
+            </div>
+          </div>
+          <div>
+            <h1 class="detail-title" id="detailTitle"></h1>
+            <p class="detail-author" id="detailAuthor"></p>
+            <p class="detail-desc" id="detailDesc"></p>
+
+            <div class="rating-row">
+              <span class="progress-label">Your rating</span>
+              <div class="star-picker" id="starPicker"></div>
+            </div>
+
+            <div class="progress-panel">
+              <div class="progress-top">
+                <span class="progress-label">Reading progress</span>
+                <span class="progress-pct" id="progressPct">0%</span>
+              </div>
+              <div class="progress-track">
+                <div
+                  class="progress-fill"
+                  id="progressFill"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <div class="progress-controls">
+                <input
+                  type="number"
+                  id="currentPageInput"
+                  min="0"
+                  placeholder="page"
+                />
+                <span>of</span>
+                <input
+                  type="number"
+                  id="totalPageInput"
+                  min="0"
+                  placeholder="total"
+                />
+                <select class="status-select" id="statusSelect">
+                  <option value="want">Want to read</option>
+                  <option value="reading">Currently reading</option>
+                  <option value="finished">Finished</option>
+                  <option value="dnf">Did not finish</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="detail-tabs">
+              <button class="detail-tab active" data-tab="notes">Notes</button>
+              <button class="detail-tab" data-tab="quotes">Quotes</button>
+            </div>
+
+            <div id="notesPanel">
+              <div class="entry-form">
+                <textarea
+                  id="noteText"
+                  placeholder="Reflect on what you just read…"
+                ></textarea>
+                <div class="entry-form-row">
+                  <label>Page (optional)</label>
+                  <input type="number" id="notePage" min="0" />
+                  <button class="btn btn-sm btn-primary" id="addNoteBtn">
+                    Add note
+                  </button>
+                </div>
+              </div>
+              <div class="entry-list" id="noteList"></div>
+            </div>
+
+            <div id="quotesPanel" hidden>
+              <div class="entry-form">
+                <textarea
+                  id="quoteText"
+                  placeholder="Copy down a line worth remembering…"
+                ></textarea>
+                <div class="entry-form-row">
+                  <label>Page (optional)</label>
+                  <input type="number" id="quotePage" min="0" />
+                  <button class="btn btn-sm btn-primary" id="addQuoteBtn">
+                    Add quote
+                  </button>
+                </div>
+              </div>
+              <div class="entry-list" id="quoteList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REFLECTIONS VIEW -->
+      <section id="reflectionsView" hidden>
+        <div class="reflection-composer">
+          <textarea
+            id="reflectionText"
+            placeholder="What's on your mind as a reader today?"
+          ></textarea>
+          <button class="btn btn-primary" id="addReflectionBtn">
+            Save reflection
+          </button>
+        </div>
+        <div class="reflection-list" id="reflectionList"></div>
+        <div class="empty-state" id="reflectionsEmpty" hidden>
+          <h2>No reflections yet</h2>
+          <p>This is a space to journal freely, separate from any one book.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ADD/EDIT BOOK MODAL -->
+    <div class="modal-overlay" id="bookModalOverlay" hidden>
+      <div class="modal">
+        <h2 id="modalTitle">Add a book</h2>
+        <form id="bookForm">
+          <div class="field">
+            <label for="fTitle">Title *</label>
+            <input type="text" id="fTitle" required />
+          </div>
+          <div class="field">
+            <label for="fAuthor">Author *</label>
+            <input type="text" id="fAuthor" required />
+          </div>
+          <div class="field">
+            <label for="fDesc">Description</label>
+            <textarea
+              id="fDesc"
+              placeholder="What's this book about?"
+            ></textarea>
+          </div>
+          <div class="field">
+            <label for="fCover">Cover image URL</label>
+            <input type="url" id="fCover" placeholder="https://…" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="fGenre">Genre / tag</label>
+              <input type="text" id="fGenre" placeholder="e.g. Fiction" />
+            </div>
+            <div class="field">
+              <label for="fPages">Total pages</label>
+              <input type="number" id="fPages" min="0" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="fStatus">Status</label>
+            <select id="fStatus">
+              <option value="want">Want to read</option>
+              <option value="reading">Currently reading</option>
+              <option value="finished">Finished</option>
+              <option value="dnf">Did not finish</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn" id="cancelModalBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="saveBookBtn">
+              Save book
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="MyLib.js"></script>
+  </body>
+</html>
