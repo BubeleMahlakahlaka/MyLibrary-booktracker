@@ -723,3 +723,56 @@ select {
 [hidden] {
   display: none !important;
 }
+
+.backup-import-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-empty {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.book-card:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 4px;
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .topbar-row {
+    gap: 12px;
+  }
+
+  .search-wrap {
+    flex-basis: 100%;
+    order: 3;
+  }
+
+  .progress-controls {
+    flex-wrap: wrap;
+  }
+
+  .progress-controls .status-select {
+    flex: 1 1 100%;
+  }
+
+  .entry-form-row {
+    flex-wrap: wrap;
+  }
+
+  .modal {
+    padding: 22px 18px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
